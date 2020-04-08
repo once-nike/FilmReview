@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="0">
+    <Properties>
+        <Property name="APP_NAME">ziyun_basic</Property>
+        <Property name="LOG_FILE_PATH">../logs/</Property>
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%t] %c{1} %m%n</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+
+        <RollingRandomAccessFile name="info"
+                                 fileName="${sys:LOG_FILE_PATH}/${APP_NAME}.log"
+                                 filePattern="${sys:LOG_FILE_PATH}/previous/%d${APP_NAME}_%d_%i.log.gz"
+                                 append="true">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+                <SizeBasedTriggeringPolicy size="200MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingRandomAccessFile>
+
+        <RollingRandomAccessFile name="error"
+                                 fileName="${sys:LOG_FILE_PATH}/${APP_NAME}_error.log"
+                                 filePattern="${sys:LOG_FILE_PATH}/previous/${APP_NAME}_%d_error_%i.log.gz"
+                                 append="true">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+                <SizeBasedTriggeringPolicy size="200MB"/>
+            </Policies>
+            <Filters>
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <DefaultRolloverStrategy max="30"/>
+        </RollingRandomAccessFile>
+    </Appenders>
+    <Loggers>
+        <Root level="debug">
+            <AppenderRef ref="console"/>
+            <AppenderRef ref="info"/>
+            <AppenderRef ref="error"/>
+        </Root>
+<!--        <Logger name="com.ziyun.saas.basic.mapper" level="debug"/>-->
+        <Logger name="org.springframework.core.env.PropertySourcesPropertyResolver" level="info"/>
+        <Logger name="org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor" level="info"/>
+        <Logger name="org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener"
+                level="info"/>
+    </Loggers>
+</Configuration>
