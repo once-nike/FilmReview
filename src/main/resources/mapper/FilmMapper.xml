@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nike.douye.dto.FilmDTO">
+    <resultMap id="film" type="com.nike.douye.dto.FilmDTO">
+        <id column="id" property="id"></id>
+        <result column="filmName" property="film_name"></result>
+        <result column="filmDirector" property="film_director"></result>
+        <result column="filmWriter" property="film_writer"></result>
+        <result column="filmActor" property="film_actor"></result>
+        <result column="filmType" property="fiim_type"></result>
+        <result column="filmCountry" property="film_country"></result>
+        <result column="filmLanguage" property="film_language"></result>
+        <result column="filmDate" property="film_date"></result>
+        <result column="filmLength" property="film_length"></result>
+        <result column="filmIntroduction" property="film_introduction"></result>
+        <result column="filmPicture" property="film_picture"></result>
+        <result column="isNew" property="film_isnew"></result>
+    </resultMap>
+    <insert id="insertFilm">
+        insert into film_thing
+        values(#{filmDTO.filmName},#{filmDTO.filmDirector},#{filmDTO.filmWriter},#{filmDTO.filmActor},
+               #{filmDTO.filmType},#{filmDTO.filmCountry},#{filmDTO.filmLanguage},#{filmDTO.filmDate},
+               #{filmDTO.filmLength},#{filmDTO.filmIntroduction},#{filmDTO.filmPicture},#{filmDTO.isNew})
+    </insert>
+
+    <update id="updateFilm">
+        update film_thing set
+        film_name = #{filmDTO.filmName}, film_director = #{filmDTO.filmDirector},
+        film_writer = #{filmDTO.filmWriter}, film_actor = #{filmDTO.filmActor},
+        fiim_type = #{filmDTO.filmType}, film_country = #{filmDTO.filmCountry},
+        film_language = #{filmDTO.filmLanguage}, film_date = #{filmDTO.filmDate},
+        film_length = #{filmDTO.filmLength}, film_introduction = #{filmDTO.filmIntroduction},
+        film_picture = #{filmDTO.filmPicture}, film_isnew = #{filmDTO.isNew}
+        where id = #{filmDTO.id}
+    </update>
+
+    <!--查询-->
+    <!--查询所有电影-->
+    <select id="queryAllFilms" resultType="com.nike.douye.dto.FilmDTO">
+        select * from film_thing
+    </select>
+
+    <!--根据电影名查询-->
+    <select id="queryFilmByFilmName" resultMap="film">
+            select * from film_thing where film_name = #{filmName}
+    </select>
+
+</mapper>
