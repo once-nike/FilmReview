@@ -1,12 +1,23 @@
 package com.nike.douye.api;
 
-import com.nike.douye.annotation.Authorization;
+import com.nike.douye.Enum.Code;
+import com.nike.douye.ValidGroup.ValidGroupUpdate;
+import com.nike.douye.ValidGroup.ValidGroupUpdateEmail;
+import com.nike.douye.ValidGroup.ValidGroupUpdatePassword;
 import com.nike.douye.annotation.CheckToken;
 import com.nike.douye.dto.ResponseDTO;
 import com.nike.douye.dto.UserDTO;
+import com.nike.douye.dto.VerificationCodeDto;
 import com.nike.douye.service.UserService;
+import com.nike.douye.ValidGroup.ValidGroupAdd;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 
 @RestController
@@ -17,29 +28,34 @@ public class UserApi {
 
     /**
      * 用户注册
-     * @param user
+     * @param verificationCodeDto
      * @return
      */
-    @RequestMapping("/add")
-    public ResponseDTO<String> addUser(@RequestBody UserDTO user){
-        if(user!=null){
-            userService.addUser(user);
-        }
-        return new ResponseDTO<>("注册成功");
+    @RequestMapping(value = "/add",method = RequestMethod.POST)
+    public ResponseDTO<String> addUser(@Validated(value = ValidGroupAdd.class) @RequestBody @NotNull VerificationCodeDto verificationCodeDto){
+            userService.addUser(verificationCodeDto.getUserDTO(),verificationCodeDto.getVerificationCode());
+        return new ResponseDTO<>(Code.SUCCESS.getValue(),"注册成功");
+    }
+
+    @RequestMapping("/verificationCode")
+    public ResponseDTO<String> verificationCode(@RequestParam @Email(message = "email格式不对哦")
+                                              @NotEmpty(message = "email不可以为空哦") String email){
+            userService.sendVerificationCode(email);
+            return new ResponseDTO<>(Code.SUCCESS.getValue(),"验证码已发送至你的邮箱");
     }
 
     /**
-     * 更新用户
+     * 更新用户基本信息
      * @param user
      * @return
      */
-    @Authorization
     @RequestMapping("/update")
-    public ResponseDTO<String> updateUser(@RequestBody UserDTO user){
+//    @CheckToken
+    public ResponseDTO<String> updateUser(@Validated(value = ValidGroupUpdate.class) @RequestBody UserDTO user){
         if(user!=null){
             userService.updateUser(user);
         }
-        return new ResponseDTO<>("用户信息修改成功");
+        return new ResponseDTO<>(Code.SUCCESS.getValue(),"用户信息修改成功");
     }
 
     /**
@@ -47,11 +63,26 @@ public class UserApi {
      * @param id
      * @return
      */
-    @Authorization
     @RequestMapping("/query")
     @CheckToken
     public ResponseDTO<UserDTO> queryUser(@RequestParam Integer id){
-        return new ResponseDTO<>(userService.queryUserById(id));
+        return new ResponseDTO<>(Code.SUCCESS.getValue(),userService.queryUserById(id));
     }
+
+    @RequestMapping("/update/email")
+//    @CheckToken
+    public ResponseDTO<String> updateEmail(@Validated(value = ValidGroupUpdateEmail.class) @RequestBody VerificationCodeDto verificationCodeDto){
+
+        userService.updateEmail(verificationCodeDto);
+        return new ResponseDTO<>( Code.SUCCESS.getValue(),"邮箱更改成功啦");
+    }
+
+    @RequestMapping("/update/password")
+//    @CheckToken
+    public ResponseDTO<String> updatePassword(@Validated(value = ValidGroupUpdatePassword.class) @RequestBody VerificationCodeDto verificationCodeDto){
+        userService.updatePassword(verificationCodeDto);
+        return new ResponseDTO<>( Code.SUCCESS.getValue(),"密码更改成功啦");
+    }
+
 
 }

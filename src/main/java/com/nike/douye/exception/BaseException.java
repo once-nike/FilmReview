@@ -12,6 +12,6 @@ public class BaseException extends RuntimeException {
         this.message = message;
     }
 
-    public BaseException() {
+    public BaseException(String message) {
     }
 }
