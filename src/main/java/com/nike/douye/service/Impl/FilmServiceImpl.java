@@ -6,9 +6,10 @@ import com.nike.douye.dto.FilmDTO;
 import com.nike.douye.mapper.FilmMapper;
 import com.nike.douye.service.FilmService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class FilmServiceImpl implements FilmService {
 	@Autowired
 	private FilmMapper filmMapper;
