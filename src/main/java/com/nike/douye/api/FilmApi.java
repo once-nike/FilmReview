@@ -31,7 +31,7 @@ public class FilmApi {
 	@RequestMapping("/update")
 	public ResponseDTO<String> updateFilm(@Validated @RequestBody FilmDTO filmDTO){
 		filmService.updateFilm(filmDTO);
-		return new ResponseDTO<>(Code.SUCCESS.getValue(),"添加成功啦");
+		return new ResponseDTO<>(Code.SUCCESS.getValue(),"更新成功啦");
 	}
 	@RequestMapping("/list/all")
 	public ResponseDTO<PageInfo<List<FilmDTO>>> getFilmList(@RequestBody FilmDTO filmDTO){

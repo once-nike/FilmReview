@@ -1,5 +1,16 @@
 package com.nike.douye.Enum;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@NoArgsConstructor
+@AllArgsConstructor
 public enum FilmType {
     //剧情
     TYPE_PLOT("剧情"),
@@ -45,14 +56,90 @@ public enum FilmType {
     TYPE_KNIGHT_ERRANT("武侠"),
     //情色
     TYPE_EROTIC("情色");
-    private final String value;
+    @Getter
+    @Setter
+    private String value;
 
 
+    @JsonValue
     public String getValue() {
         return value;
     }
 
-    FilmType(String value) {
-        this.value = value;
+    public static List<FilmType> StringToEnum(List<String> strs){
+        List filmTypes = new ArrayList<FilmType>();
+        for (String str :strs){
+            switch (str){
+                case "剧情" :
+                    filmTypes.add(TYPE_PLOT);
+                    break;
+                case "喜剧" :
+                    filmTypes.add(TYPE_COMEDY);
+                    break;
+                case "动作" :
+                    filmTypes.add(TYPE_ACTION);
+                    break;
+                case "爱情" :
+                    filmTypes.add(TYPE_LOVE);
+                    break;
+                case "科幻" :
+                    filmTypes.add(TYPE_SCIENCE_FICTION);
+                    break;
+                case "动画" :
+                    filmTypes.add(TYPE_ANIMATION);
+                    break;
+                case "悬疑" :
+                    filmTypes.add(TYPE_SUSPENSE);
+                    break;
+                case "惊悚" :
+                    filmTypes.add(TYPE_THRILLER);
+                    break;
+                case "恐怖" :
+                    filmTypes.add(TYPE_TERROR);
+                    break;
+                case "犯罪" :
+                    filmTypes.add(TYPE_CRIME);
+                    break;
+                case "同性" :
+                    filmTypes.add(TYPE_HOMOSEXUAL);
+                    break;
+                case "音乐" :
+                    filmTypes.add(TYPE_MUSIC);
+                    break;
+                case "歌舞" :
+                    filmTypes.add(TYPE_SONGANDDANCE);
+                    break;
+                case "传记" :
+                    filmTypes.add(TYPE_BIOGRAPHY);
+                    break;
+                case "历史" :
+                    filmTypes.add(TYPE_HISTORY);
+                    break;
+                case "战争" :
+                    filmTypes.add(TYPE_WARFARE);
+                    break;
+                case "西部" :
+                    filmTypes.add(TYPE_WEST);
+                    break;
+                case "奇幻" :
+                    filmTypes.add(TYPE_FANTASY);
+                    break;
+                case "灾难" :
+                    filmTypes.add(TYPE_DISASTER);
+                    break;
+                case "冒险" :
+                    filmTypes.add(TYPE_ADVENTURE);
+                    break;
+                case "武侠" :
+                    filmTypes.add(TYPE_KNIGHT_ERRANT);
+                    break;
+                case "情色" :
+                    filmTypes.add(TYPE_EROTIC);
+                    break;
+                default:
+                    break;
+            }
+        }
+        return filmTypes;
     }
 }
