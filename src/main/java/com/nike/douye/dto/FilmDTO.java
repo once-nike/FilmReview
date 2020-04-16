@@ -93,4 +93,18 @@ public class FilmDTO {
 		this.filmPicture = filmPicture;
 		this.isNew = isNew;
 	}
+
+	public FilmDTO(char isNew, Integer pageNum,Integer pageSize) {
+		this.isNew = isNew;
+		this.pageNum = pageNum;
+		this.pageSize = pageSize;
+	}
+
+	public FilmDTO(List<FilmType> filmType,List<FilmCountry> filmCountry,List<FilmLanguage> filmLanguage,Integer pageNum, Integer pageSize) {
+		this.filmType = filmType;
+		this.filmCountry = filmCountry;
+		this.filmLanguage = filmLanguage;
+		this.pageNum = pageNum;
+		this.pageSize = pageSize;
+	}
 }

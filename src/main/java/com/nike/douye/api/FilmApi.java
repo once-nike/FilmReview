@@ -28,19 +28,34 @@ public class FilmApi {
 		filmService.addFilm(filmDTO);
 		return new ResponseDTO<>(Code.SUCCESS.getValue(),"添加成功啦");
 	}
+
 	@RequestMapping("/update")
 	public ResponseDTO<String> updateFilm(@Validated @RequestBody FilmDTO filmDTO){
 		filmService.updateFilm(filmDTO);
 		return new ResponseDTO<>(Code.SUCCESS.getValue(),"更新成功啦");
 	}
+
 	@RequestMapping("/list/all")
 	public ResponseDTO<PageInfo<List<FilmDTO>>> getFilmList(@RequestBody FilmDTO filmDTO){
 		PageInfo<List<FilmDTO>> allFilms = filmService.getAllFilms(filmDTO);
 		return new ResponseDTO(Code.SUCCESS.getValue(),allFilms);
 	}
+
 	@RequestMapping("/list/byFilmName")
 	public ResponseDTO<PageInfo<List<FilmDTO>>> getFilmByFilmName(@RequestBody FilmDTO filmDTO){
 		PageInfo<List<FilmDTO>> filmByName = filmService.getFilmByName(filmDTO);
 		return new ResponseDTO(Code.SUCCESS.getValue(),filmByName);
+	}
+
+	@RequestMapping("/list/byIsNew")
+	public ResponseDTO<PageInfo<List<FilmDTO>>> getFilmByIsNew(@RequestBody FilmDTO filmDTO){
+		PageInfo<List<FilmDTO>> filmByIsNew = filmService.getFilmByIsNew(filmDTO);
+		return new ResponseDTO(Code.SUCCESS.getValue(),filmByIsNew);
+	}
+
+	@RequestMapping("/list/byType")
+	public ResponseDTO<PageInfo<List<FilmDTO>>> getFilmByType(@RequestBody FilmDTO filmDTO){
+		PageInfo<List<FilmDTO>> filmByType = filmService.getFilmByType(filmDTO);
+		return new ResponseDTO(Code.SUCCESS.getValue(),filmByType);
 	}
 }

@@ -45,4 +45,32 @@ public interface FilmMapper {
 	 * @return
 	 */
 	List<FilmInformation> queryInformationOfFilm(@Param("filmName") String filmName);
+
+	/**
+	 * 查询所有新电影
+	 * @param isNew
+	 * @return
+	 */
+	List<FilmDTO> queryFilmByIsNew(@Param("isNew") char isNew);
+
+	/**
+	 * 查询所有新电影的电影类别、国家、语言
+	 * @param isNew
+	 * @return
+	 */
+	List<FilmInformation> queryInformationOfFilmByIsNew(@Param("isNew") char isNew);
+
+	/**
+	 * 根据类型查询电影
+	 * @param filmInformation
+	 * @return
+	 */
+	List<FilmDTO> queryFilmByType(FilmInformation filmInformation);
+
+	/**
+	 * 根据类型查询电影类别、国家、语言
+	 * @param filmInformation
+	 * @return
+	 */
+	List<FilmInformation> queryInformationOfFilmByType(FilmInformation filmInformation);
 }
