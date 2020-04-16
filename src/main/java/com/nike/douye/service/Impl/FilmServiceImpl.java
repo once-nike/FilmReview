@@ -67,6 +67,44 @@ public class FilmServiceImpl implements FilmService {
 	}
 
 	@Override
+	public PageInfo<List<FilmDTO>> getFilmByIsNew(FilmDTO filmDTO) {
+		PageHelper.startPage(filmDTO.getPageNum(),filmDTO.getPageSize());
+		List<FilmDTO> filmDTOS = filmMapper.queryFilmByIsNew(filmDTO.getIsNew());
+		List<FilmInformation> filmInformations = filmMapper.queryInformationOfFilmByIsNew(filmDTO.getIsNew());
+		if(!isEmpty(filmDTOS)&&!isEmpty(filmInformations)){
+			filmDTOS = fuse(filmDTOS, filmInformations);
+		}else {
+			throw new BaseException("暂无新增电影", Code.PARAM_ERROR.getValue());
+		}
+		return new PageInfo(filmDTOS);
+	}
+
+	@Override
+	public PageInfo<List<FilmDTO>> getFilmByType(FilmDTO filmDTO) {
+		FilmDTO film = enumToString(filmDTO);
+		List<FilmType> filmTypeList = film.getFilmType();
+		if(filmTypeList!=null && filmTypeList.size()>1){
+			throw new BaseException("电影类型只能选一个",Code.PARAM_TOO_LONG.getValue());
+		}
+		String filmType = StringUtils.join(filmTypeList, "");
+		List<FilmCountry> filmCountryList = film.getFilmCountry();
+		if(filmCountryList!=null && filmCountryList.size()>1){
+			throw new BaseException("电影国家只能选一个",Code.PARAM_TOO_LONG.getValue());
+		}
+		String filmCountry = StringUtils.join(filmCountryList, "");
+		List<FilmLanguage> filmLanguageList = film.getFilmLanguage();
+		if(filmLanguageList!=null && filmLanguageList.size()>1){
+			throw new BaseException("电影语言只能选一个",Code.PARAM_TOO_LONG.getValue());
+		}
+		String filmLanguage = StringUtils.join(filmLanguageList, "");
+		FilmInformation filmInformation = new FilmInformation(filmType, filmCountry, filmLanguage);
+		List<FilmDTO> filmDTOS = filmMapper.queryFilmByType(filmInformation);
+		List<FilmInformation> filmInformations = filmMapper.queryInformationOfFilmByType(filmInformation);
+		List<FilmDTO> fuse = fuse(filmDTOS, filmInformations);
+		return new PageInfo(fuse);
+	}
+
+	@Override
 	public PageInfo<List<FilmDTO>> getAllFilms(FilmDTO filmDTO){
 		PageHelper.startPage(filmDTO.getPageNum(),filmDTO.getPageSize());
 		List<FilmDTO> filmDTOs = filmMapper.queryAllFilms();
@@ -86,21 +124,30 @@ public class FilmServiceImpl implements FilmService {
 		List<FilmType> filmTypeEnums = filmDTO.getFilmType();
 		List<FilmCountry> filmCountryEnums = filmDTO.getFilmCountry();
 		List<FilmLanguage> filmLanguageEnums = filmDTO.getFilmLanguage();
-		List filmType = new ArrayList(filmTypeEnums.size());
-		List filmCountry = new ArrayList(filmCountryEnums.size());
-		List filmLanguage = new ArrayList(filmLanguageEnums.size());
-		for (FilmType filmTypeEnum : filmTypeEnums){
-			filmType.add(filmTypeEnum.getValue());
+		//如果前端传入的枚举集合不是空，则将枚举转化成字符串
+		if (filmCountryEnums!=null){
+			List filmCountry = new ArrayList(filmCountryEnums.size());
+			for (FilmCountry filmCountryEnum : filmCountryEnums){
+				filmCountry.add(filmCountryEnum.getValue());
+			}
+			filmDTO.setFilmCountry(filmCountry);
 		}
-		for (FilmCountry filmCountryEnum : filmCountryEnums){
-			filmCountry.add(filmCountryEnum.getValue());
+
+		if (filmTypeEnums!=null){
+			List filmType = new ArrayList(filmTypeEnums.size());
+			for (FilmType filmTypeEnum : filmTypeEnums){
+				filmType.add(filmTypeEnum.getValue());
+			}
+			filmDTO.setFilmType(filmType);
 		}
-		for (FilmLanguage filmLanguageEnum : filmLanguageEnums){
-			filmLanguage.add(filmLanguageEnum.getValue());
+
+		if(filmLanguageEnums!=null){
+			List filmLanguage = new ArrayList(filmLanguageEnums.size());
+			for (FilmLanguage filmLanguageEnum : filmLanguageEnums){
+				filmLanguage.add(filmLanguageEnum.getValue());
+			}
+			filmDTO.setFilmLanguage(filmLanguage);
 		}
-		filmDTO.setFilmType(filmType);
-		filmDTO.setFilmCountry(filmCountry);
-		filmDTO.setFilmLanguage(filmLanguage);
 		return filmDTO;
 	}
 

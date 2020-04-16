@@ -31,4 +31,18 @@ public interface FilmService {
 	 * @return
 	 */
 	PageInfo<List<FilmDTO>> getFilmByName(FilmDTO filmDTO);
+
+	/**
+	 * 查询所有新电影
+	 * @param filmDTO
+	 * @return
+	 */
+	PageInfo<List<FilmDTO>> getFilmByIsNew(FilmDTO filmDTO);
+
+	/**
+	 * 根据类型搜索电影
+	 * @param filmDTO
+	 * @return
+	 */
+	PageInfo<List<FilmDTO>> getFilmByType(FilmDTO filmDTO);
 }
