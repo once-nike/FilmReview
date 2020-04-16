@@ -9,21 +9,14 @@
         <result column="phone" property="phone"></result>
         <result column="address" property="address"></result>
     </resultMap>
-   <!--根据用户名或手机号查询密码-->
-    <select id="queryUserByUserNameOrPhone" resultMap="user">
+   <!--根据用户名查询密码-->
+    <select id="queryUserByUserName" resultMap="user">
         select id,username,password,email,phone,address from user_thing
-        where username = #{userNameOrPhone} or phone = #{userNameOrPhone}
+        where username = #{userName}
     </select>
-    <!--获取uuid-->
-    <select id="queryUuid" resultType="String">
-        select uuid()
+    <!--根据email查询用户信息-->
+    <select id="queryUserByEmail" resultMap="user">
+        select id,username,password,email,phone,address from user_thing
+        where email = #{email}
     </select>
-    <!--将token添加入库-->
-    <insert id="insertAccessToken">
-        insert into access_token(user_id,access_token) values(#{userId},#{token})
-    </insert>
-    <!--删除数据库中的token记录-->
-    <delete id="deleteAccessToken">
-        delete from access_token where user_id = #{userId} and access_token = #{token}
-    </delete>
 </mapper>

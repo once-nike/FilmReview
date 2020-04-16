@@ -16,27 +16,43 @@ public class LoginServiceImpl implements LoginService {
     @Autowired
     private LoginMapper loginMapper;
     @Override
-    public String login(UserDTO user) {
+    public String loginByUserName(UserDTO user) {
         if(StringUtils.isBlank(user.getUserName())){
-            throw new BaseException("请输入用户名或手机号",Code.PARAM_MISSING.getValue());
+            throw new BaseException("请输入用户名",Code.PARAM_MISSING.getValue());
         }else if(StringUtils.isBlank(user.getPassword())){
             throw new BaseException("请输入密码",Code.PARAM_MISSING.getValue());
         }
-        UserDTO userDTO = loginMapper.queryUserByUserNameOrPhone(user.getUserName());
+        UserDTO userDTO = loginMapper.queryUserByUserName(user.getUserName());
         if(userDTO==null){
             throw new BaseException("用户名不正确", Code.PARAM_ERROR.getValue());
         }else if(!userDTO.getPassword().equals(user.getPassword())){
             throw new BaseException("密码不正确", Code.PARAM_ERROR.getValue());
         }
         String token = JwtUtil.createJWT(1000 * 60, userDTO);
-//        loginMapper.insertAccessToken(userDTO.getId(),token);
         return token;
     }
 
+    @Override
+    public String loginByEmail(UserDTO user) {
+        if(StringUtils.isBlank(user.getEmail())){
+            throw new BaseException("请输入email",Code.PARAM_MISSING.getValue());
+        }else if(StringUtils.isBlank(user.getPassword())){
+            throw new BaseException("请输入密码",Code.PARAM_MISSING.getValue());
+        }
+        UserDTO userDTO = loginMapper.queryUserByEmail(user.getEmail());
+        if(userDTO==null){
+            throw new BaseException("email输入有误", Code.PARAM_ERROR.getValue());
+        }else if(!userDTO.getPassword().equals(user.getPassword())){
+            throw new BaseException("密码不正确", Code.PARAM_ERROR.getValue());
+        }
+        String token = JwtUtil.createJWT(1000 * 60, userDTO);
+        return token;
+    }
 
 
     @Test
     public void test(){
 
     }
+
 }

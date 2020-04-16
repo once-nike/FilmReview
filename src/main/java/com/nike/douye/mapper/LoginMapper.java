@@ -5,28 +5,14 @@ import org.apache.ibatis.annotations.Param;
 public interface LoginMapper {
     /**
      * 根据用户名或手机号查询密码
-     * @param userNameOrPhone
+     * @param userName
      * @return
      */
-    UserDTO queryUserByUserNameOrPhone(@Param("userNameOrPhone") String userNameOrPhone);
-
+    UserDTO queryUserByUserName(@Param("userName") String userName);
     /**
-     * 获取uuid
+     * 根据用户名或手机号查询密码
+     * @param email
      * @return
      */
-    String queryUuid();
-
-    /**
-     * 将token添加入库
-     * @param userId
-     * @param token
-     */
-    void insertAccessToken(@Param("userId")Integer userId,@Param("token")String token);
-
-    /**
-     * 删除数据库中的token记录
-     * @param userId
-     * @param token
-     */
-    void deleteAccessToken(@Param("userId")Integer userId,@Param("token")String token);
+    UserDTO queryUserByEmail(@Param("email") String email);
 }

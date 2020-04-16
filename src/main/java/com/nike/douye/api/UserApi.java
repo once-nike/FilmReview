@@ -1,20 +1,18 @@
 package com.nike.douye.api;
 
 import com.nike.douye.Enum.Code;
-import com.nike.douye.ValidGroup.ValidGroupUpdate;
-import com.nike.douye.ValidGroup.ValidGroupUpdateEmail;
-import com.nike.douye.ValidGroup.ValidGroupUpdatePassword;
-import com.nike.douye.annotation.CheckToken;
+import com.nike.douye.ValidGroup.ValidGroupC;
+import com.nike.douye.ValidGroup.ValidGroupD;
+import com.nike.douye.ValidGroup.ValidGroupE;
 import com.nike.douye.dto.ResponseDTO;
 import com.nike.douye.dto.UserDTO;
 import com.nike.douye.dto.VerificationCodeDto;
 import com.nike.douye.service.UserService;
-import com.nike.douye.ValidGroup.ValidGroupAdd;
+import com.nike.douye.ValidGroup.ValidGroupA;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -32,7 +30,7 @@ public class UserApi {
      * @return
      */
     @RequestMapping(value = "/add",method = RequestMethod.POST)
-    public ResponseDTO<String> addUser(@Validated(value = ValidGroupAdd.class) @RequestBody @NotNull VerificationCodeDto verificationCodeDto){
+    public ResponseDTO<String> addUser(@Validated(value = ValidGroupA.class) @RequestBody @NotNull VerificationCodeDto verificationCodeDto){
             userService.addUser(verificationCodeDto.getUserDTO(),verificationCodeDto.getVerificationCode());
         return new ResponseDTO<>(Code.SUCCESS.getValue(),"注册成功");
     }
@@ -51,7 +49,7 @@ public class UserApi {
      */
     @RequestMapping("/update")
 //    @CheckToken
-    public ResponseDTO<String> updateUser(@Validated(value = ValidGroupUpdate.class) @RequestBody UserDTO user){
+    public ResponseDTO<String> updateUser(@Validated(value = ValidGroupC.class) @RequestBody UserDTO user){
         if(user!=null){
             userService.updateUser(user);
         }
@@ -64,14 +62,14 @@ public class UserApi {
      * @return
      */
     @RequestMapping("/query")
-    @CheckToken
+//    @CheckToken
     public ResponseDTO<UserDTO> queryUser(@RequestParam Integer id){
         return new ResponseDTO<>(Code.SUCCESS.getValue(),userService.queryUserById(id));
     }
 
     @RequestMapping("/update/email")
 //    @CheckToken
-    public ResponseDTO<String> updateEmail(@Validated(value = ValidGroupUpdateEmail.class) @RequestBody VerificationCodeDto verificationCodeDto){
+    public ResponseDTO<String> updateEmail(@Validated(value = ValidGroupD.class) @RequestBody VerificationCodeDto verificationCodeDto){
 
         userService.updateEmail(verificationCodeDto);
         return new ResponseDTO<>( Code.SUCCESS.getValue(),"邮箱更改成功啦");
@@ -79,7 +77,7 @@ public class UserApi {
 
     @RequestMapping("/update/password")
 //    @CheckToken
-    public ResponseDTO<String> updatePassword(@Validated(value = ValidGroupUpdatePassword.class) @RequestBody VerificationCodeDto verificationCodeDto){
+    public ResponseDTO<String> updatePassword(@Validated(value = ValidGroupE.class) @RequestBody VerificationCodeDto verificationCodeDto){
         userService.updatePassword(verificationCodeDto);
         return new ResponseDTO<>( Code.SUCCESS.getValue(),"密码更改成功啦");
     }

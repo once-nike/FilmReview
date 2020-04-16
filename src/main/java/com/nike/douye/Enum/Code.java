@@ -17,7 +17,9 @@ public enum Code {
     //参数重复
     PARAM_REPEATED(2005),
     //参数已存在
-    PARAM_ALREAD_EXIST(2006);
+    PARAM_ALREAD_EXIST(2006),
+    //无数据
+    DATA_NOT_EXIT(2007);
     private final Integer value;
 
     Code(Integer value) {

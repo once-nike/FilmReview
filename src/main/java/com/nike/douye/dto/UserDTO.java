@@ -1,9 +1,11 @@
 package com.nike.douye.dto;
 
-import com.nike.douye.ValidGroup.ValidGroupAdd;
-import com.nike.douye.ValidGroup.ValidGroupUpdate;
-import com.nike.douye.ValidGroup.ValidGroupUpdateEmail;
-import com.nike.douye.ValidGroup.ValidGroupUpdatePassword;
+import com.nike.douye.ValidGroup.ValidGroupA;
+import com.nike.douye.ValidGroup.ValidGroupB;
+import com.nike.douye.ValidGroup.ValidGroupC;
+import com.nike.douye.ValidGroup.ValidGroupD;
+import com.nike.douye.ValidGroup.ValidGroupE;
+import com.nike.douye.ValidGroup.ValidGroupF;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,27 +21,27 @@ public class UserDTO {
     /**
      * 用户名
      */
-    @Size(max = 16,min = 4,message = "用户名最长是16，最短是4",groups = {ValidGroupAdd.class, ValidGroupUpdate.class})
-    @NotNull(message = "用户名不能为空哦",groups ={ValidGroupAdd.class, ValidGroupUpdate.class})
-    @Pattern(regexp = "[^\\u4e00-\\u9fa5]+",message = "不可以出现汉字哦",groups = {ValidGroupAdd.class, ValidGroupUpdate.class})
+    @Size(max = 16,min = 4,message = "用户名最长是16，最短是4",groups = {ValidGroupA.class, ValidGroupC.class, ValidGroupF.class})
+    @NotNull(message = "用户名不能为空哦",groups ={ValidGroupA.class, ValidGroupC.class, ValidGroupF.class})
+    @Pattern(regexp = "[^\\u4e00-\\u9fa5]+",message = "不可以出现汉字哦",groups = {ValidGroupA.class, ValidGroupF.class})
     String userName;
     /**
      * 密码
      */
-    @Size(max = 16,min = 4,message = "密码最长是16，最短是4",groups = {ValidGroupAdd.class, ValidGroupUpdatePassword.class})
-    @Pattern(regexp = "[^\\u4e00-\\u9fa5]+",message = "不可以出现汉字哦",groups = {ValidGroupAdd.class, ValidGroupUpdatePassword.class})
-    @NotNull(message = "密码不能为空哦",groups = {ValidGroupAdd.class, ValidGroupUpdatePassword.class})
+    @Size(max = 16,min = 4,message = "密码最长是16，最短是4",groups = {ValidGroupA.class, ValidGroupE.class, ValidGroupF.class, ValidGroupB.class})
+    @Pattern(regexp = "[^\\u4e00-\\u9fa5]+",message = "不可以出现汉字哦",groups = {ValidGroupA.class, ValidGroupE.class, ValidGroupF.class, ValidGroupB.class})
+    @NotNull(message = "密码不能为空哦",groups = {ValidGroupA.class, ValidGroupE.class, ValidGroupF.class, ValidGroupB.class})
     String password;
     /**
      * 邮箱
      */
-    @NotEmpty(message = "请输入email",groups = {ValidGroupAdd.class, ValidGroupUpdateEmail.class, ValidGroupUpdatePassword.class})
-    @Email(message = "email格式不对哦",groups = {ValidGroupAdd.class, ValidGroupUpdateEmail.class, ValidGroupUpdatePassword.class})
+    @NotEmpty(message = "请输入email",groups = {ValidGroupA.class, ValidGroupD.class, ValidGroupE.class, ValidGroupB.class})
+    @Email(message = "email格式不对哦",groups = {ValidGroupA.class, ValidGroupD.class, ValidGroupE.class, ValidGroupB.class})
     String email;
 
     String phone;
 
-    @Length(max = 200,message = "地址只能输入200字以内的任意字符",groups ={ValidGroupAdd.class, ValidGroupUpdate.class})
+    @Length(max = 200,message = "地址只能输入200字以内的任意字符",groups ={ValidGroupA.class, ValidGroupC.class})
     String address;
     String isAdmin;
 

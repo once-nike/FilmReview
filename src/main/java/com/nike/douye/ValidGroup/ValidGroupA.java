@@ -1,4 +1,4 @@
 package com.nike.douye.ValidGroup;
 
-public interface ValidGroupUpdate {
+public interface ValidGroupA {
 }
