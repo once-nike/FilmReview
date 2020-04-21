@@ -1,6 +1,7 @@
 package com.nike.douye.service.Impl;
 
 import com.auth0.jwt.JWT;
+import com.nike.douye.Enum.Code;
 import com.nike.douye.Enum.Score;
 import com.nike.douye.entity.ScorePo;
 import com.nike.douye.exception.BaseException;
@@ -32,7 +33,7 @@ public class ScoreServiceImpl implements ScoreService {
 
 		//判断此用户是否已为该电影打过分
 		if (scoreMapper.checkUserScore(userId,filmId) != null){
-			throw new BaseException("您已经为该电影打过了分了哦");
+			throw new BaseException("您已经为该电影打过了分了哦",Code.REPEAT_OPERATION.getValue());
 		}
 		//拿到该电影的评分信息，并重新计算总分
 		ScorePo scorePo = scoreMapper.findScoreInformationByFilmId(filmId);
