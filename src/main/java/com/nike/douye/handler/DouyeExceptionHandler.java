@@ -20,7 +20,11 @@ public class DouyeExceptionHandler {
         if(exception instanceof BaseException){
             log.error("自定义异常： ",exception);
             BaseException baseException = (BaseException) exception;
-            return new ResponseDTO(baseException.getErrorCode(),baseException.getMessage());
+            if (baseException.getErrorCode()==null){
+                return new ResponseDTO(baseException.getMessage());
+            }else {
+                return new ResponseDTO(baseException.getErrorCode(),baseException.getMessage());
+            }
         }else if (exception instanceof MethodArgumentNotValidException){
             log.error("参数校验异常： ",exception);
             MethodArgumentNotValidException manve = (MethodArgumentNotValidException) exception;

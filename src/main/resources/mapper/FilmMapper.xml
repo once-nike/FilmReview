@@ -15,7 +15,7 @@
     </sql>
     <insert id="insertFilm">
         insert into
-        film_thing(film_name,film_director,film_writer,film_actor,fiim_type,film_country,film_language,
+        film_thing(film_name,film_director,film_writer,film_actor,film_type,film_country,film_language,
         film_date,film_length,film_introduction,film_picture,film_isnew)
         values(#{filmDTO.filmName},#{filmDTO.filmDirector},#{filmDTO.filmWriter},#{filmDTO.filmActor},
                #{filmInformation.filmType},#{filmInformation.filmCountry},#{filmInformation.filmLanguage},
@@ -98,4 +98,14 @@
             and film_language like CONCAT('%',#{filmLanguage},'%')
         </if>
     </select>
+
+    <select id="queryFilmIdByFilmName" resultType="int">
+        select id from film_thing
+        where film_name = #{filmName}
+    </select>
+
+    <insert id="insertScore">
+        insert into score(film_id)
+        values (#{filmId})
+    </insert>
 </mapper>

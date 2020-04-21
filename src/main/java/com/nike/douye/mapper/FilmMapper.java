@@ -73,4 +73,17 @@ public interface FilmMapper {
 	 * @return
 	 */
 	List<FilmInformation> queryInformationOfFilmByType(FilmInformation filmInformation);
+
+	/**
+	 * 根据电影名称查询电影id
+	 * @param filmName
+	 * @return
+	 */
+	Integer queryFilmIdByFilmName(@Param("filmName")String filmName);
+
+	/**
+	 * 添加电影评分信息记录
+	 * @param filmId
+	 */
+	void insertScore(@Param("filmId")Integer filmId);
 }

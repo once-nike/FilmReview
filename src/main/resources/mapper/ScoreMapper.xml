@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nike.douye.mapper.ScoreMapper">
+
+    <insert id="addScore">
+        insert into score_film_user(film_id,user_id,score)
+        values(#{filmId},#{userId},#{score})
+    </insert>
+
+    <select id="findScoreInformationByFilmId" resultType="com.nike.douye.entity.ScorePo">
+        select id , film_id as FilmId , score_five as ScoreFive , score_four as ScoreFour,
+                score_three as ScoreThree , score_two as ScoreTwo , score_one as ScoreOne,
+                score_total as totalScore
+        from score
+        where film_id = #{filmId}
+    </select>
+
+    <update id="updateScore">
+        update score
+        set score_total = #{scorePo.totalScore}
+            <if test="scorePo.scoreFive != null">
+                ,score_five = #{scorePo.scoreFive}
+            </if>
+            <if test="scorePo.scoreFour != null">
+                ,score_four = #{scorePo.scoreFour}
+            </if>
+            <if test="scorePo.scoreThree != null">
+                ,score_three = #{scorePo.scoreThree}
+            </if>
+            <if test="scorePo.scoreTwo != null">
+                ,score_two = #{scorePo.scoreTwo}
+            </if>
+            <if test="scorePo.scoreOne != null">
+                ,score_one = #{scorePo.scoreOne}
+            </if>
+        where film_id = #{scorePo.filmId}
+    </update>
+
+    <select id="checkUserScore" resultType="int">
+        select score from score_film_user
+        where user_id = #{userId} and film_id = #{filmId}
+    </select>
+
+</mapper>

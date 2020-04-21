@@ -37,6 +37,8 @@ public class FilmServiceImpl implements FilmService {
 		List<FilmLanguage> filmLanguageList = film.getFilmLanguage();
 		String filmLanguage = StringUtils.join(filmLanguageList, ",");
 		filmMapper.insertFilm(film,new FilmInformation(filmType,filmCountry,filmLanguage));
+		Integer filmId = filmMapper.queryFilmIdByFilmName(filmDTO.getFilmName());
+		filmMapper.insertScore(filmId);
 	}
 
 
@@ -179,10 +181,8 @@ public class FilmServiceImpl implements FilmService {
 	}
 	@Test
 	public void test(){
-		String s = "nike,kaka,cc";
-		List<String> list = Arrays.asList(s.split(","));
-		for (String s1 : list){
-			System.out.println(s1);
-		}
+		double i = 10;
+		double pow = Math.pow(10, 3);
+		System.out.println((double)Math.round(i*pow)/pow);
 	}
 }
