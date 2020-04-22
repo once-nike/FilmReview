@@ -28,5 +28,15 @@ public class ScoreApi {
 		}
 		return new ResponseDTO<>(Code.SUCCESS.getValue(),"打分成功");
 	}
+	@RequestMapping("/show")
+	public ResponseDTO<ScoreDTO>  showScore(@RequestBody ScoreDTO scoreDTO){
+		ScoreDTO scoreDTO1;
+		if(scoreDTO != null){
+			scoreDTO1= scoreService.showScore(scoreDTO);
+		}else {
+			throw new BaseException("scoreDTO不可以为空", Code.PARAM_MISSING.getValue());
+		}
+		return new ResponseDTO<>(Code.SUCCESS.getValue(),scoreDTO1);
+	}
 
 }

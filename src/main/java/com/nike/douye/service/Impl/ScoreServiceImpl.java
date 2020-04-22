@@ -3,6 +3,7 @@ package com.nike.douye.service.Impl;
 import com.auth0.jwt.JWT;
 import com.nike.douye.Enum.Code;
 import com.nike.douye.Enum.Score;
+import com.nike.douye.dto.ScoreDTO;
 import com.nike.douye.entity.ScorePo;
 import com.nike.douye.exception.BaseException;
 import com.nike.douye.mapper.ScoreMapper;
@@ -49,6 +50,25 @@ public class ScoreServiceImpl implements ScoreService {
 		//添加个人评分信息
 		scoreMapper.addScore(this.score,filmId,userId);
 	}
+
+	@Override
+	public ScoreDTO showScore(ScoreDTO scoreDTO) {
+		//从token里拿到id
+		String token = httpServletRequest.getHeader("token");
+		Integer userId = Integer.valueOf(JWT.decode(token).getClaim("id").asString());
+
+		ScorePo scoreInformation;
+		Score myScoreEnum;
+		if (scoreDTO.getFilmId() != null){
+			scoreInformation = scoreMapper.findScoreInformationByFilmId(scoreDTO.getFilmId());
+			Integer myScore = scoreMapper.queryMyScoreByUserIdAndFilmId(userId, scoreDTO.getFilmId());
+			myScoreEnum = Score.StringToEnum(myScore);
+		}else {
+			throw new BaseException("filmId必传哦",Code.PARAM_MISSING.getValue());
+		}
+		return new ScoreDTO(myScoreEnum,scoreInformation);
+	}
+
 
 	//计算总分
 	public static double finalScoring(ScorePo scorePo){

@@ -34,4 +34,12 @@ public interface ScoreMapper {
 	 * @return
 	 */
 	Integer checkUserScore(@Param("userId")Integer userId,@Param("filmId")Integer filmId);
+
+	/**
+	 * 根据用户id和电影id查询我的评分
+	 * @param userId
+	 * @param filmId
+	 * @return
+	 */
+	Integer queryMyScoreByUserIdAndFilmId(@Param("userId")Integer userId,@Param("filmId")Integer filmId);
 }

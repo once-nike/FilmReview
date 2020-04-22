@@ -41,4 +41,10 @@
         where user_id = #{userId} and film_id = #{filmId}
     </select>
 
+    <select id="queryMyScoreByUserIdAndFilmId" resultType="int">
+        select score from score_film_user
+        where film_id = #{filmId}
+        and user_id = #{userId}
+    </select>
+
 </mapper>
