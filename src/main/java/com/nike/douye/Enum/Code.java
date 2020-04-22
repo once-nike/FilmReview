@@ -19,7 +19,10 @@ public enum Code {
     //参数已存在
     PARAM_ALREAD_EXIST(2006),
     //无数据
-    DATA_NOT_EXIT(2007);
+    DATA_NOT_EXIT(2007),
+
+    //重复操作
+    REPEAT_OPERATION(2008);
     private final Integer value;
 
     Code(Integer value) {
