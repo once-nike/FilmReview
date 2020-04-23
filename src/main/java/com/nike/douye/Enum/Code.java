@@ -15,7 +15,16 @@ public enum Code {
     //参数错误
     PARAM_ERROR(2004),
     //参数重复
-    PARAM_REPEATED(2005);
+    PARAM_REPEATED(2005),
+    //参数已存在
+    PARAM_ALREAD_EXIST(2006),
+    //无数据
+    DATA_NOT_EXIT(2007),
+
+    //重复操作
+    REPEAT_OPERATION(2008),
+
+    ACCESS_DENIED(2009);
     private final Integer value;
 
     Code(Integer value) {

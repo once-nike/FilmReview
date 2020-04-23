@@ -8,6 +8,7 @@
         <result column="email" property="email"></result>
         <result column="phone" property="phone"></result>
         <result column="address" property="address"></result>
+        <result column="is_admin" property="isAdmin"></result>
     </resultMap>
 
     <!--<resultMap id="users" type="List">
@@ -26,22 +27,42 @@
        )
    </insert>
 
-    <select id="queryUserByPhonesOrUserName" resultType="com.nike.douye.dto.UserDTO">
+    <select id="queryUserByUserName" resultType="com.nike.douye.dto.UserDTO">
         select * from user_thing
-        where (username = #{phoneOrUserName} or phone = #{phoneOrUserName})
-        and id not in (#{id})
+        where username = #{userName}
     </select>
 
     <!--更新用户-->
-    <update id="updateUser" parameterType="com.nike.douye.dto.UserDTO">
+    <update id="updateUserInformation" parameterType="com.nike.douye.dto.UserDTO">
         update user_thing
-        set username = #{userName},password = #{password},
-        email = #{email},phone = #{phone},address = #{address}
+        set username = #{userName},phone = #{phone},address = #{address}
         where id = #{id}
+    </update>
+    <!--改邮箱-->
+    <update id="updateUserEmial">
+        update user_thing
+        set email = #{userDTO.email}
+        where id = #{userDTO.id}
+    </update>
+    <!--改密码-->
+    <update id="updateUserPassword">
+        update user_thing
+        set password = #{userDTO.password}
+        where id = #{userDTO.id}
     </update>
 
     <!--根据id查询用户-->
     <select id="queryUserById" resultMap="user">
-        select * from user_thing where id = #{id} 
+        select id,username,password,email,phone,address,is_admin from user_thing where id = #{id}
+    </select>
+
+    <select id="queryUserByEmail" resultType="com.nike.douye.dto.UserDTO">
+        select * from user_thing where email = #{email}
+    </select>
+
+    <select id="queryUserNameByIdAndUserName" resultType="String">
+        select u.username from
+        (select username from user_thing where id not in (#{id})) u
+        where username = #{userName}
     </select>
 </mapper>

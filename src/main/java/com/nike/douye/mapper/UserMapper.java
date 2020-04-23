@@ -16,16 +16,16 @@ public interface UserMapper {
 
     /**
      * 根据用户名和手机号查询用户
-     * @param phoneOrUserName
+     * @param userName
      * @return
      */
-    List<UserDTO> queryUserByPhonesOrUserName(@Param("phoneOrUserName")String phoneOrUserName,@Param("id")Integer id);
+    List<UserDTO> queryUserByUserName(@Param("userName")String userName);
 
     /**
      * 更新用户
      * @param user
      */
-    void updateUser(UserDTO user);
+    void updateUserInformation(UserDTO user);
 
     /**
      * 根据id查询用户信息
@@ -33,4 +33,30 @@ public interface UserMapper {
      * @return
      */
     UserDTO queryUserById(@Param("id") Integer id);
+
+    /**
+     *
+     * @param email
+     * @return
+     */
+    UserDTO queryUserByEmail(@Param("email")String email);
+
+    /**
+     * 查询除该id在内的所有用户名中是否存在当前用户名
+     * @param id
+     * @return
+     */
+    String queryUserNameByIdAndUserName(@Param("id") Integer id,@Param("userName")String userName);
+
+    /**
+     * 更改用户邮件
+     * @param userDTO
+     */
+    void updateUserEmial(@Param("userDTO")UserDTO userDTO);
+
+    /**
+     * 根据id修改用户密码
+     * @param userDTO
+     */
+    void updateUserPassword(@Param("userDTO")UserDTO userDTO);
 }

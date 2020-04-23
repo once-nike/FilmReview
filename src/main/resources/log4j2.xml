@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN" monitorInterval="0">
     <Properties>
-        <Property name="APP_NAME">ziyun_basic</Property>
+        <Property name="APP_NAME">douye</Property>
         <Property name="LOG_FILE_PATH">../logs/</Property>
         <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%t] %c{1} %m%n</Property>
     </Properties>

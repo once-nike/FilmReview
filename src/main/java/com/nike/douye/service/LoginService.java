@@ -4,9 +4,15 @@ import com.nike.douye.dto.UserDTO;
 
 public interface LoginService {
     /**
-     * 登录
+     * 用户名登录
      * @param user
      * @return
      */
-    String login(UserDTO user);
+    String loginByUserName(UserDTO user);
+    /**
+     * email登录
+     * @param user
+     * @return
+     */
+    String loginByEmail(UserDTO user);
 }
