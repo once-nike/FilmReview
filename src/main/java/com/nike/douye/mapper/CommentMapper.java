@@ -70,4 +70,23 @@ public interface CommentMapper {
 	 * @return
 	 */
 	List<CommentPo> querySonCommentByFatherId(@Param("fatherId")Integer fatherId);
+
+	/**
+	 * 添加评论收藏
+	 * @param commentId
+	 */
+	void insertCommentCollection(@Param("userId")Integer userId,@Param("commentId")Integer commentId);
+
+	/**
+	 * 根据userid查询个人收藏影评
+	 * @param userId
+	 * @return
+	 */
+	List<CommentPo> queryCommentCollectionByUserId(@Param("userId")Integer userId);
+
+	/**
+	 * 删除个人收藏
+	 * @param commentId
+	 */
+	void deleteCollectionById(@Param("commentId")Integer commentId,@Param("userId")Integer userId);
 }

@@ -7,7 +7,7 @@
     </insert>
 
     <insert id="insertMyCommentRecord">
-        insert into user_comment_collection(user_id,comment_id)
+        insert into user_comment_record(user_id,comment_id)
         values (#{userId},#{commentId})
     </insert>
     <!--添加子评论-->
@@ -50,7 +50,7 @@
                 fc.film_id as filmId, fc.comment as comment,
                 fc.likes as likes, fc.dislikes as dislikes,
                 fc.create_time as commentTime
-            from user_comment_collection ucc,father_comments fc
+            from user_comment_record ucc,father_comments fc
             where ucc.user_id = #{userId}
             and fc.id = ucc.comment_id
             order by ucc.create_time desc
@@ -80,4 +80,26 @@
         where id = #{commentId}
     </update>
 
+    <insert id="insertCommentCollection">
+        insert into user_comment_collection(user_id,comment_id)
+        values (#{userId},#{commentId})
+    </insert>
+
+    <!--展示个人收藏-->
+    <select id="queryCommentCollectionByUserId" resultType="com.nike.douye.entity.CommentPo">
+        select fc.id as commentId, fc.user_id as userId,
+                fc.film_id as filmId, fc.comment as comment,
+                fc.likes as likes, fc.dislikes as dislikes,
+                fc.create_time as commentTime
+            from user_comment_collection ucc,father_comments fc
+            where ucc.user_id = #{userId}
+            and fc.id = ucc.comment_id
+            order by ucc.create_time desc
+    </select>
+
+    <delete id="deleteCollectionById">
+        delete from user_comment_collection
+        where comment_id = #{commentId}
+        and user_id = #{userId}
+    </delete>
 </mapper>

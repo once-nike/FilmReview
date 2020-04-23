@@ -69,9 +69,9 @@ public class CommentApi {
 
 	@RequestMapping(value = "/show/byUser",method = RequestMethod.GET)
 	public ResponseDTO<FilmCommentDTO> showCommentByUser(){
-		FilmCommentDTO filmCommentDTO = commentService.queryCommentCollection();
+		FilmCommentDTO filmCommentDTO = commentService.queryCommentRecord();
 		if(isEmpty(filmCommentDTO.getComments())){
-			throw new BaseException("您还没有收藏任何影评哦",Code.DATA_NOT_EXIT.getValue());
+			throw new BaseException("您还没有任何影评记录哦",Code.DATA_NOT_EXIT.getValue());
 		}
 		return new ResponseDTO(Code.SUCCESS.getValue(),filmCommentDTO);
 	}
@@ -95,7 +95,7 @@ public class CommentApi {
 	@RequestMapping(value = "/update/sonCommentLikes",method = RequestMethod.POST)
 	public ResponseDTO<String> updatesonCommentLike(@RequestBody CommentDTO commentDTO){
 		if (commentDTO != null){
-			commentService.updateCommentLike(commentDTO);
+			commentService.updateSonCommentLike(commentDTO);
 		}else {
 			throw new BaseException("commentDTO不可以为空哦",Code.PARAM_MISSING.getValue());
 		}
@@ -106,6 +106,34 @@ public class CommentApi {
 			message = "点踩成功";
 		}
 		return new ResponseDTO(Code.SUCCESS.getValue(),message);
+	}
+
+	@RequestMapping(value = "/collect/Comment",method = RequestMethod.GET)
+	public ResponseDTO<String> collectComment(@RequestParam Integer commentId){
+		if (commentId != null){
+			commentService.collectComment(commentId);
+		}else {
+			throw new BaseException("commentId不可以为空哦",Code.PARAM_MISSING.getValue());
+		}
+		return new ResponseDTO(Code.SUCCESS.getValue(),"收藏成功");
+	}
+
+	@RequestMapping(value = "/show/collection",method = RequestMethod.GET)
+	public ResponseDTO<FilmCommentDTO> showMyCollection(){
+		FilmCommentDTO filmCommentDTO = commentService.queryCommentCollection();
+		if(isEmpty(filmCommentDTO.getComments())){
+			throw new BaseException("您还没有收藏任何影评哦",Code.DATA_NOT_EXIT.getValue());
+		}
+		return new ResponseDTO(Code.SUCCESS.getValue(),filmCommentDTO);
+	}
+
+	@RequestMapping(value = "/delete/collection",method = RequestMethod.GET)
+	public ResponseDTO<FilmCommentDTO> deleteMyCollection(@RequestParam Integer collectionId){
+		if(collectionId == null){
+			throw new BaseException("collectionId不可以为空哦",Code.PARAM_MISSING.getValue());
+		}
+		commentService.deleteMyCollection(collectionId);
+		return new ResponseDTO(Code.SUCCESS.getValue(),"删除成功");
 	}
 
 	public static boolean isEmpty(List list){

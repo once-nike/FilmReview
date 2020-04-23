@@ -68,7 +68,7 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public FilmCommentDTO queryCommentCollection() {
+	public FilmCommentDTO queryCommentRecord() {
 		//取userId
 		String token = request.getHeader("token");
 		Integer userId = Integer.valueOf(JWT.decode(token).getClaim("id").asString());
@@ -91,7 +91,7 @@ public class CommentServiceImpl implements CommentService {
 			default:
 				like = "";
 		}
-		commentMapper.updateSonCommentLike(like,commentDTO.getCommentId());
+		commentMapper.updateCommentLike(like,commentDTO.getCommentId());
 	}
 
 	@Override
@@ -107,7 +107,33 @@ public class CommentServiceImpl implements CommentService {
 			default:
 				like = "";
 		}
-		commentMapper.updateCommentLike(like,commentDTO.getCommentId());
+		commentMapper.updateSonCommentLike(like,commentDTO.getCommentId());
+	}
+
+	@Override
+	public void collectComment(Integer commentId) {
+		//取userId
+		String token = request.getHeader("token");
+		Integer userId = Integer.valueOf(JWT.decode(token).getClaim("id").asString());
+		commentMapper.insertCommentCollection(userId,commentId);
+	}
+
+	@Override
+	public FilmCommentDTO queryCommentCollection() {
+		//取userId
+		String token = request.getHeader("token");
+		Integer userId = Integer.valueOf(JWT.decode(token).getClaim("id").asString());
+		List<CommentPo> commentPos = commentMapper.queryCommentCollectionByUserId(userId);
+		List<CommentDTO> commentDTOS = poToDto(commentPos);
+		return new FilmCommentDTO(commentDTOS);
+	}
+
+	@Override
+	public void deleteMyCollection(Integer commentId) {
+		//取userId
+		String token = request.getHeader("token");
+		Integer userId = Integer.valueOf(JWT.decode(token).getClaim("id").asString());
+		commentMapper.deleteCollectionById(commentId,userId);
 	}
 
 	//po转dto

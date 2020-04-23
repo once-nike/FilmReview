@@ -35,10 +35,10 @@ public interface CommentService {
 	SonCommentDTO queryCommentByFatherId(Integer fatherId);
 
 	/**
-	 * 查看个人收藏的影评
+	 * 查看个人影评记录
 	 * @return
 	 */
-	FilmCommentDTO queryCommentCollection();
+	FilmCommentDTO queryCommentRecord();
 
 	/**
 	 * 更新父评论赞和踩
@@ -53,4 +53,22 @@ public interface CommentService {
 	 * @return
 	 */
 	void updateSonCommentLike(CommentDTO commentDTO);
+
+	/**
+	 * 收藏影评
+	 * @param commentId
+	 */
+	void collectComment(Integer commentId);
+
+	/**
+	 * 查看个人收藏影评
+	 * @return
+	 */
+	FilmCommentDTO queryCommentCollection();
+
+	/**
+	 * 删除个人影评收藏
+	 * @param commentId
+	 */
+	void deleteMyCollection(Integer commentId);
 }
