@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nike.douye.mapper.CommentMapper">
+    <insert id="insertComment" parameterType="com.nike.douye.entity.CommentPo">
+        insert into father_comments(user_id,film_id,comment)
+        values (#{userId},#{filmId},#{comment})
+    </insert>
+
+    <insert id="insertMyCommentRecord">
+        insert into user_comment_collection(user_id,comment_id)
+        values (#{userId},#{commentId})
+    </insert>
+    <!--添加子评论-->
+    <insert id="insertSonComment" parameterType="com.nike.douye.entity.CommentPo">
+        insert into son_comment(user_id,father_comment_id,son_comment)
+        values (#{userId},#{filmId},#{comment})
+    </insert>
+
+    <select id="querySonCommentByFatherId" resultType="com.nike.douye.entity.CommentPo">
+        select id as commentId, user_id as userId,
+                father_comment_id as filmId, son_comment as comment,
+                likes as likes, dislikes as dislikes,
+                create_time as commentTime
+        from son_comment
+        where father_comment_id = #{fatherId}
+        order by likes desc,
+        create_time desc
+    </select>
+
+    <select id="queryCommentIdByUserIdAndFilmId" resultType="int">
+        select id from father_comments
+        where user_id = #{userId}
+        and film_id = #{filmId}
+        order by create_time desc
+    </select>
+
+    <select id="queryCommentByFilmId" resultType="com.nike.douye.entity.CommentPo">
+        select id as commentId, user_id as userId,
+                film_id as filmId, comment as comment,
+                likes as likes, dislikes as dislikes,
+                create_time as commentTime
+        from father_comments
+        where film_id = #{filmId}
+        order by likes desc,
+        create_time desc
+    </select>
+
+    <select id="queryCommentByUserId" resultType="com.nike.douye.entity.CommentPo">
+            select fc.id as commentId, fc.user_id as userId,
+                fc.film_id as filmId, fc.comment as comment,
+                fc.likes as likes, fc.dislikes as dislikes,
+                fc.create_time as commentTime
+            from user_comment_collection ucc,father_comments fc
+            where ucc.user_id = #{userId}
+            and fc.id = ucc.comment_id
+            order by ucc.create_time desc
+    </select>
+
+    <update id="updateCommentLike">
+        update father_comments
+        set
+        <if test="like eq 'y'.toString()">
+            likes = likes+1
+        </if>
+        <if test="like eq 'n'.toString()">
+            dislikes = dislikes+1
+        </if>
+        where id = #{commentId}
+    </update>
+
+    <update id="updateSonCommentLike">
+        update son_comment
+        set
+        <if test="like eq 'y'.toString()">
+            likes = likes+1
+        </if>
+        <if test="like eq 'n'.toString()">
+            dislikes = dislikes+1
+        </if>
+        where id = #{commentId}
+    </update>
+
+</mapper>
