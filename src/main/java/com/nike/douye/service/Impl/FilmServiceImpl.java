@@ -1,5 +1,6 @@
 package com.nike.douye.service.Impl;
 
+import com.auth0.jwt.JWT;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.nike.douye.Enum.Code;
@@ -18,6 +19,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,6 +29,9 @@ import java.util.List;
 public class FilmServiceImpl implements FilmService {
 	@Autowired
 	private FilmMapper filmMapper;
+
+	@Autowired
+	private HttpServletRequest request;
 	@Override
 	public void addFilm(FilmDTO filmDTO) {
 		FilmDTO film = enumToString(filmDTO);
@@ -104,6 +109,37 @@ public class FilmServiceImpl implements FilmService {
 		List<FilmInformation> filmInformations = filmMapper.queryInformationOfFilmByType(filmInformation);
 		List<FilmDTO> fuse = fuse(filmDTOS, filmInformations);
 		return new PageInfo(fuse);
+	}
+
+	@Override
+	public void collectFilm(Integer filmId) {
+		//取userId
+		String token = request.getHeader("token");
+		Integer userId = Integer.valueOf(JWT.decode(token).getClaim("id").asString());
+		filmMapper.insertCollection(userId,filmId);
+	}
+
+	@Override
+	public PageInfo<List<FilmDTO>> getFilmCollection(FilmDTO filmDTO) {
+		PageHelper.startPage(filmDTO.getPageNum(),filmDTO.getPageSize());
+		//取userId
+		String token = request.getHeader("token");
+		Integer userId = Integer.valueOf(JWT.decode(token).getClaim("id").asString());
+		List<FilmDTO> filmDTOS = filmMapper.queryCollectionByUserId(userId);
+		List<FilmInformation> filmInformations = filmMapper.queryCollectionTypesByUserId(userId);
+		if(isEmpty(filmDTOS)){
+			throw new BaseException("您还没有收藏任何电影哦",Code.DATA_NOT_EXIT.getValue());
+		}
+		List<FilmDTO> fuse = fuse(filmDTOS, filmInformations);
+		return new PageInfo(fuse);
+	}
+
+	@Override
+	public void deleteCollection(Integer filmId) {
+		//取userId
+		String token = request.getHeader("token");
+		Integer userId = Integer.valueOf(JWT.decode(token).getClaim("id").asString());
+		filmMapper.deleteCollection(filmId,userId);
 	}
 
 	@Override

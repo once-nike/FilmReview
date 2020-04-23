@@ -45,4 +45,22 @@ public interface FilmService {
 	 * @return
 	 */
 	PageInfo<List<FilmDTO>> getFilmByType(FilmDTO filmDTO);
+
+	/**
+	 * 收藏电影
+	 * @param filmId
+	 */
+	void collectFilm(Integer filmId);
+
+	/**
+	 * 展示电影收藏
+	 * @return
+	 */
+	PageInfo<List<FilmDTO>> getFilmCollection(FilmDTO filmDTO);
+
+	/**
+	 * 删除电影收藏
+	 * @param filmId
+	 */
+	void deleteCollection(Integer filmId);
 }

@@ -108,4 +108,35 @@
         insert into score(film_id)
         values (#{filmId})
     </insert>
+
+    <insert id="insertCollection">
+        insert into user_film_collection(user_id,film_id)
+        values (#{userId},#{filmId})
+    </insert>
+
+    <select id="queryCollectionByUserId" resultType="com.nike.douye.dto.FilmDTO">
+        select ft.id,ft.film_name as filmName,ft.film_director as filmDirector,
+            ft.film_writer as filmWriter, ft.film_actor as filmActor,ft.film_date as filmDate,
+            ft.film_length as filmLength,ft.film_introduction as filmIntroduction,
+            ft.film_picture as filmPicture,ft.film_isnew as isNew
+        from film_thing ft,user_film_collection ufc
+        where ufc.user_id = #{userId}
+        and ufc.film_id = ft.id
+        order by ufc.create_time desc
+    </select>
+
+    <select id="queryCollectionTypesByUserId" resultType="com.nike.douye.entity.FilmInformation">
+        select ft.id,ft.film_type as filmType,ft.film_country as filmCountry,
+            ft.film_language as filmLanguage
+        from film_thing ft,user_film_collection ufc
+        where ufc.user_id = #{userId}
+        and ufc.film_id = ft.id
+        order by ufc.create_time desc
+    </select>
+
+    <delete id="deleteCollection">
+        delete from user_film_collection
+        where film_id = #{filmId}
+        and user_id = #{userId}
+    </delete>
 </mapper>

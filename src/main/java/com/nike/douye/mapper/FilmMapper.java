@@ -86,4 +86,32 @@ public interface FilmMapper {
 	 * @param filmId
 	 */
 	void insertScore(@Param("filmId")Integer filmId);
+
+	/**
+	 * 添加收藏
+	 * @param userId
+	 * @param filmId
+	 */
+	void insertCollection(@Param("userId")Integer userId,@Param("filmId")Integer filmId);
+
+	/**
+	 * 查询收藏的电影
+	 * @param userId
+	 * @return
+	 */
+	List<FilmDTO> queryCollectionByUserId(@Param("userId") Integer userId);
+
+	/**
+	 * 查询收藏电影的类型
+	 * @param userId
+	 * @return
+	 */
+	List<FilmInformation> queryCollectionTypesByUserId(@Param("userId") Integer userId);
+
+	/**
+	 * 删除电影收藏
+	 * @param filmId
+	 */
+	void deleteCollection(@Param("filmId")Integer filmId,@Param("userId") Integer userId);
+
 }
