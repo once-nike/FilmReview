@@ -28,7 +28,7 @@ public class LoginServiceImpl implements LoginService {
         }else if(!userDTO.getPassword().equals(user.getPassword())){
             throw new BaseException("密码不正确", Code.PARAM_ERROR.getValue());
         }
-        String token = JwtUtil.createJWT(1000 * 60, userDTO);
+        String token = JwtUtil.createJWT(1000 * 60 * 60, userDTO);
         return token;
     }
 
@@ -45,7 +45,7 @@ public class LoginServiceImpl implements LoginService {
         }else if(!userDTO.getPassword().equals(user.getPassword())){
             throw new BaseException("密码不正确", Code.PARAM_ERROR.getValue());
         }
-        String token = JwtUtil.createJWT(1000 * 60, userDTO);
+        String token = JwtUtil.createJWT(1000 * 60 * 60, userDTO);
         return token;
     }
 

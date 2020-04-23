@@ -2,6 +2,8 @@ package com.nike.douye.api;
 
 import com.github.pagehelper.PageInfo;
 import com.nike.douye.Enum.Code;
+import com.nike.douye.annotation.AdminToken;
+import com.nike.douye.annotation.CheckToken;
 import com.nike.douye.dto.FilmDTO;
 import com.nike.douye.dto.ResponseDTO;
 import com.nike.douye.dto.UserDTO;
@@ -25,42 +27,49 @@ public class FilmApi {
 	@Autowired
 	FilmService filmService;
 	@RequestMapping(value = "/add",method = RequestMethod.POST)
+	@AdminToken
 	public ResponseDTO<String> addFilm(@Validated @RequestBody FilmDTO filmDTO){
 		filmService.addFilm(filmDTO);
 		return new ResponseDTO<>(Code.SUCCESS.getValue(),"添加成功啦");
 	}
 
 	@RequestMapping(value = "/update",method = RequestMethod.POST)
+	@AdminToken
 	public ResponseDTO<String> updateFilm(@Validated @RequestBody FilmDTO filmDTO){
 		filmService.updateFilm(filmDTO);
 		return new ResponseDTO<>(Code.SUCCESS.getValue(),"更新成功啦");
 	}
 
 	@RequestMapping(value = "/list/all",method = RequestMethod.POST)
+	@CheckToken
 	public ResponseDTO<PageInfo<List<FilmDTO>>> getFilmList(@RequestBody FilmDTO filmDTO){
 		PageInfo<List<FilmDTO>> allFilms = filmService.getAllFilms(filmDTO);
 		return new ResponseDTO(Code.SUCCESS.getValue(),allFilms);
 	}
 
 	@RequestMapping(value = "/list/byFilmName",method = RequestMethod.POST)
+	@CheckToken
 	public ResponseDTO<PageInfo<List<FilmDTO>>> getFilmByFilmName(@RequestBody FilmDTO filmDTO){
 		PageInfo<List<FilmDTO>> filmByName = filmService.getFilmByName(filmDTO);
 		return new ResponseDTO(Code.SUCCESS.getValue(),filmByName);
 	}
 
 	@RequestMapping(value = "/list/byIsNew",method = RequestMethod.POST)
+	@CheckToken
 	public ResponseDTO<PageInfo<List<FilmDTO>>> getFilmByIsNew(@RequestBody FilmDTO filmDTO){
 		PageInfo<List<FilmDTO>> filmByIsNew = filmService.getFilmByIsNew(filmDTO);
 		return new ResponseDTO(Code.SUCCESS.getValue(),filmByIsNew);
 	}
 
 	@RequestMapping(value = "/list/byType",method = RequestMethod.POST)
+	@CheckToken
 	public ResponseDTO<PageInfo<List<FilmDTO>>> getFilmByType(@RequestBody FilmDTO filmDTO){
 		PageInfo<List<FilmDTO>> filmByType = filmService.getFilmByType(filmDTO);
 		return new ResponseDTO(Code.SUCCESS.getValue(),filmByType);
 	}
 
 	@RequestMapping(value = "/collect/film",method = RequestMethod.GET)
+	@CheckToken
 	public ResponseDTO<PageInfo<List<FilmDTO>>> collectFilm(@RequestParam Integer filmId){
 		if (filmId == null){
 			throw new BaseException("filmId不可以为空哦",Code.PARAM_MISSING.getValue());
@@ -70,6 +79,7 @@ public class FilmApi {
 	}
 
 	@RequestMapping(value = "/show/filmCollection",method = RequestMethod.POST)
+	@CheckToken
 	public ResponseDTO<PageInfo<List<FilmDTO>>> showfilmCollection(@RequestBody FilmDTO filmDTO){
 		if (filmDTO == null){
 			throw new BaseException("filmDTO不可以为空哦",Code.PARAM_MISSING.getValue());
@@ -79,6 +89,7 @@ public class FilmApi {
 	}
 
 	@RequestMapping(value = "/delete/colliection",method = RequestMethod.GET)
+	@CheckToken
 	public ResponseDTO<String> deleteCollection(@RequestParam Integer filmId){
 		if (filmId == null){
 			throw new BaseException("filmId不可以为空哦",Code.PARAM_MISSING.getValue());

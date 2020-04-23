@@ -2,6 +2,7 @@ package com.nike.douye.api;
 
 import com.nike.douye.Enum.Code;
 import com.nike.douye.Enum.Score;
+import com.nike.douye.annotation.CheckToken;
 import com.nike.douye.dto.ResponseDTO;
 import com.nike.douye.dto.ScoreDTO;
 import com.nike.douye.exception.BaseException;
@@ -20,6 +21,7 @@ public class ScoreApi {
 	ScoreService scoreService;
 
 	@RequestMapping("/add")
+	@CheckToken
 	public ResponseDTO<String>  scoring(@RequestBody ScoreDTO scoreDTO){
 		if(scoreDTO != null){
 			scoreService.scoring(scoreDTO.getMyScore(),scoreDTO.getFilmId());
@@ -29,6 +31,7 @@ public class ScoreApi {
 		return new ResponseDTO<>(Code.SUCCESS.getValue(),"打分成功");
 	}
 	@RequestMapping("/show")
+	@CheckToken
 	public ResponseDTO<ScoreDTO>  showScore(@RequestBody ScoreDTO scoreDTO){
 		ScoreDTO scoreDTO1;
 		if(scoreDTO != null){

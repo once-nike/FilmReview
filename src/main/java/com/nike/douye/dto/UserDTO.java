@@ -45,6 +45,14 @@ public class UserDTO {
     String address;
     String isAdmin;
 
+    public UserDTO(String userName, String email, String phone,  String address, String isAdmin) {
+        this.userName = userName;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.isAdmin = isAdmin;
+    }
+
     public UserDTO(String userName, String email, String phone, String address) {
         this.userName = userName;
         this.email = email;

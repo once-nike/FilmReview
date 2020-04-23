@@ -125,9 +125,9 @@ public class UserServiceImpl implements UserService {
     public  void validation(String email,String erificationCode){
 
         if(!redisUtil.existsKey(email)){
-            throw new BaseException("该邮箱和验证的邮箱不符，请检查是否输入正确！",Code.PARAM_ERROR.getValue());
+            throw new BaseException("验证码已过期！",Code.PARAM_ERROR.getValue());
         }else if(!erificationCode.equals(redisUtil.getStringValue(email))){
-            throw new BaseException("验证码不正确或已过期，给爷爬",Code.PARAM_ERROR.getValue());
+            throw new BaseException("验证码不正确，给爷爬",Code.PARAM_ERROR.getValue());
         }
     }
 

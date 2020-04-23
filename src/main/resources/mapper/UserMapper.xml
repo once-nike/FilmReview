@@ -8,6 +8,7 @@
         <result column="email" property="email"></result>
         <result column="phone" property="phone"></result>
         <result column="address" property="address"></result>
+        <result column="is_admin" property="isAdmin"></result>
     </resultMap>
 
     <!--<resultMap id="users" type="List">
@@ -52,7 +53,7 @@
 
     <!--根据id查询用户-->
     <select id="queryUserById" resultMap="user">
-        select username,email,phone,address from user_thing where id = #{id}
+        select id,username,password,email,phone,address,is_admin from user_thing where id = #{id}
     </select>
 
     <select id="queryUserByEmail" resultType="com.nike.douye.dto.UserDTO">

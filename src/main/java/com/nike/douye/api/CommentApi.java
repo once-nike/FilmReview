@@ -2,6 +2,7 @@ package com.nike.douye.api;
 
 import com.nike.douye.Enum.Code;
 import com.nike.douye.Enum.LIKE;
+import com.nike.douye.annotation.CheckToken;
 import com.nike.douye.dto.CommentDTO;
 import com.nike.douye.dto.FilmCommentDTO;
 import com.nike.douye.dto.ResponseDTO;
@@ -25,6 +26,7 @@ public class CommentApi {
 	CommentService commentService;
 
 	@RequestMapping(value = "/insert/fatherComment",method = RequestMethod.POST)
+	@CheckToken
 	public ResponseDTO<String> insertFatherComment(@RequestBody FilmCommentDTO filmCommentDTO){
 		if(filmCommentDTO != null){
 			commentService.insertFatherComment(filmCommentDTO.getComments().get(0),filmCommentDTO.getFilmId());
@@ -35,6 +37,7 @@ public class CommentApi {
 	}
 
 	@RequestMapping(value = "/insert/sonComment",method = RequestMethod.POST)
+	@CheckToken
 	public ResponseDTO<String> insertSonComment(@RequestBody SonCommentDTO sonCommentDTO){
 		if(sonCommentDTO != null){
 			commentService.insertSonComment(sonCommentDTO.getComments().get(0),sonCommentDTO.getFatherId());
@@ -46,6 +49,7 @@ public class CommentApi {
 
 
 	@RequestMapping(value = "/showFatherComment/byFilmId",method = RequestMethod.GET)
+	@CheckToken
 	public ResponseDTO<FilmCommentDTO> showCommentByFilmId(@RequestParam Integer filmId){
 		FilmCommentDTO filmCommentDTO;
 		if(filmId != null){
@@ -57,6 +61,7 @@ public class CommentApi {
 	}
 
 	@RequestMapping(value = "/showSonComment/byFatherId",method = RequestMethod.GET)
+	@CheckToken
 	public ResponseDTO<FilmCommentDTO> showCommentByFatherId(@RequestParam Integer fatherId){
 		SonCommentDTO sonCommentDTO;
 		if(fatherId != null){
@@ -68,6 +73,7 @@ public class CommentApi {
 	}
 
 	@RequestMapping(value = "/show/byUser",method = RequestMethod.GET)
+	@CheckToken
 	public ResponseDTO<FilmCommentDTO> showCommentByUser(){
 		FilmCommentDTO filmCommentDTO = commentService.queryCommentRecord();
 		if(isEmpty(filmCommentDTO.getComments())){
@@ -77,6 +83,7 @@ public class CommentApi {
 	}
 
 	@RequestMapping(value = "/update/fatherCommentLikes",method = RequestMethod.POST)
+	@CheckToken
 	public ResponseDTO<String> updatefatherCommentLike(@RequestBody CommentDTO commentDTO){
 		if (commentDTO != null){
 			commentService.updateCommentLike(commentDTO);
@@ -93,6 +100,7 @@ public class CommentApi {
 	}
 
 	@RequestMapping(value = "/update/sonCommentLikes",method = RequestMethod.POST)
+	@CheckToken
 	public ResponseDTO<String> updatesonCommentLike(@RequestBody CommentDTO commentDTO){
 		if (commentDTO != null){
 			commentService.updateSonCommentLike(commentDTO);
@@ -109,6 +117,7 @@ public class CommentApi {
 	}
 
 	@RequestMapping(value = "/collect/Comment",method = RequestMethod.GET)
+	@CheckToken
 	public ResponseDTO<String> collectComment(@RequestParam Integer commentId){
 		if (commentId != null){
 			commentService.collectComment(commentId);
@@ -119,6 +128,7 @@ public class CommentApi {
 	}
 
 	@RequestMapping(value = "/show/collection",method = RequestMethod.GET)
+	@CheckToken
 	public ResponseDTO<FilmCommentDTO> showMyCollection(){
 		FilmCommentDTO filmCommentDTO = commentService.queryCommentCollection();
 		if(isEmpty(filmCommentDTO.getComments())){
@@ -128,11 +138,12 @@ public class CommentApi {
 	}
 
 	@RequestMapping(value = "/delete/collection",method = RequestMethod.GET)
-	public ResponseDTO<FilmCommentDTO> deleteMyCollection(@RequestParam Integer collectionId){
-		if(collectionId == null){
+	@CheckToken
+	public ResponseDTO<FilmCommentDTO> deleteMyCollection(@RequestParam Integer commentId){
+		if(commentId == null){
 			throw new BaseException("collectionId不可以为空哦",Code.PARAM_MISSING.getValue());
 		}
-		commentService.deleteMyCollection(collectionId);
+		commentService.deleteMyCollection(commentId);
 		return new ResponseDTO(Code.SUCCESS.getValue(),"删除成功");
 	}
 

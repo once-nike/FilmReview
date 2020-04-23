@@ -4,6 +4,7 @@ import com.nike.douye.Enum.Code;
 import com.nike.douye.ValidGroup.ValidGroupC;
 import com.nike.douye.ValidGroup.ValidGroupD;
 import com.nike.douye.ValidGroup.ValidGroupE;
+import com.nike.douye.annotation.CheckToken;
 import com.nike.douye.dto.ResponseDTO;
 import com.nike.douye.dto.UserDTO;
 import com.nike.douye.dto.VerificationCodeDto;
@@ -48,7 +49,7 @@ public class UserApi {
      * @return
      */
     @RequestMapping("/update")
-//    @CheckToken
+    @CheckToken
     public ResponseDTO<String> updateUser(@Validated(value = ValidGroupC.class) @RequestBody UserDTO user){
         if(user!=null){
             userService.updateUser(user);
@@ -62,13 +63,13 @@ public class UserApi {
      * @return
      */
     @RequestMapping("/query")
-//    @CheckToken
+    @CheckToken
     public ResponseDTO<UserDTO> queryUser(@RequestParam Integer id){
         return new ResponseDTO<>(Code.SUCCESS.getValue(),userService.queryUserById(id));
     }
 
     @RequestMapping("/update/email")
-//    @CheckToken
+    @CheckToken
     public ResponseDTO<String> updateEmail(@Validated(value = ValidGroupD.class) @RequestBody VerificationCodeDto verificationCodeDto){
 
         userService.updateEmail(verificationCodeDto);
@@ -76,7 +77,7 @@ public class UserApi {
     }
 
     @RequestMapping("/update/password")
-//    @CheckToken
+    @CheckToken
     public ResponseDTO<String> updatePassword(@Validated(value = ValidGroupE.class) @RequestBody VerificationCodeDto verificationCodeDto){
         userService.updatePassword(verificationCodeDto);
         return new ResponseDTO<>( Code.SUCCESS.getValue(),"密码更改成功啦");

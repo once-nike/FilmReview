@@ -22,7 +22,9 @@ public enum Code {
     DATA_NOT_EXIT(2007),
 
     //重复操作
-    REPEAT_OPERATION(2008);
+    REPEAT_OPERATION(2008),
+
+    ACCESS_DENIED(2009);
     private final Integer value;
 
     Code(Integer value) {
