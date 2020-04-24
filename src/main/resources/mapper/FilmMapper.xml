@@ -2,14 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nike.douye.mapper.FilmMapper">
     <sql id="queryFilms">
-        select id,film_name as filmName,film_director as filmDirector,
+        select film_thing.id,film_name as filmName,film_director as filmDirector,
             film_writer as filmWriter, film_actor as filmActor,film_date as filmDate,
             film_length as filmLength,film_introduction as filmIntroduction,
             film_picture as filmPicture,film_isnew as isNew
         from film_thing
     </sql>
     <sql id="queryFilmInformation">
-        select id,film_type as filmType,film_country as filmCountry,
+        select film_thing.id,film_type as filmType,film_country as filmCountry,
             film_language as filmLanguage
         from film_thing
     </sql>
@@ -27,7 +27,7 @@
         update film_thing set
         film_name = #{filmDTO.filmName}, film_director = #{filmDTO.filmDirector},
         film_writer = #{filmDTO.filmWriter}, film_actor = #{filmDTO.filmActor},
-        fiim_type = #{filmInformation.filmType}, film_country = #{filmInformation.filmCountry},
+        film_type = #{filmInformation.filmType}, film_country = #{filmInformation.filmCountry},
         film_language = #{filmInformation.filmLanguage}, film_date = #{filmDTO.filmDate},
         film_length = #{filmDTO.filmLength}, film_introduction = #{filmDTO.filmIntroduction},
         film_picture = #{filmDTO.filmPicture}, film_isnew = #{filmDTO.isNew}
@@ -38,10 +38,16 @@
     <!--查询所有电影的基本信息-->
     <select id="queryAllFilms" resultType="com.nike.douye.dto.FilmDTO">
         <include refid="queryFilms"></include>
+        ,score s
+        where s.film_id = film_thing.id
+        order by s.score_total desc
     </select>
     <!--查询所有电影的类别、国家、语言-->
     <select id="queryInformationOfAllFilm" resultType="com.nike.douye.entity.FilmInformation">
         <include refid="queryFilmInformation"></include>
+        ,score s
+        where s.film_id = film_thing.id
+        order by s.score_total desc
     </select>
 
     <!--根据电影名查询-->
@@ -63,12 +69,18 @@
 
     <select id="queryFilmByIsNew" resultType="com.nike.douye.dto.FilmDTO">
         <include refid="queryFilms"></include>
-        where film_isnew = #{isNew}
+        ,score s
+        where s.film_id = film_thing.id
+        and film_thing.film_isnew = #{isNew}
+        order by s.score_total desc
     </select>
 
     <select id="queryInformationOfFilmByIsNew" resultType="com.nike.douye.entity.FilmInformation">
         <include refid="queryFilmInformation"></include>
-        where film_isnew = #{isNew}
+        ,score s
+        where s.film_id = film_thing.id
+        and film_thing.film_isnew = #{isNew}
+        order by s.score_total desc
     </select>
 
     <select id="queryFilmByType" resultType="com.nike.douye.dto.FilmDTO" parameterType="com.nike.douye.entity.FilmInformation">

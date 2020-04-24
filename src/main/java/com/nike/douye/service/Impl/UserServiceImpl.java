@@ -1,5 +1,6 @@
 package com.nike.douye.service.Impl;
 
+import com.auth0.jwt.JWT;
 import com.github.pagehelper.util.StringUtil;
 import com.nike.douye.Enum.Code;
 import com.nike.douye.dto.UserDTO;
@@ -14,6 +15,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +27,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RedisUtil redisUtil;
+
+    @Autowired
+    private HttpServletRequest request;
 
     @Override
     public void addUser(UserDTO user,String verificationCode){
@@ -58,8 +63,11 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void updateUser(UserDTO user) {
+        //取userId
+        String token = request.getHeader("token");
+        Integer userId = Integer.valueOf(JWT.decode(token).getClaim("id").asString());
         //用户名
-        String userName = userMapper.queryUserNameByIdAndUserName(user.getId(), user.getUserName());
+        String userName = userMapper.queryUserNameByIdAndUserName(userId, user.getUserName());
         if(userName != null){
             throw new BaseException("该用户名已被注册！",Code.PARAM_ALREAD_EXIST.getValue());
         }
@@ -71,6 +79,7 @@ public class UserServiceImpl implements UserService {
             }
         }
 
+        user.setId(userId);
         userMapper.updateUserInformation(user);
     }
 
@@ -98,12 +107,12 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 根据id查询用户信息
-     * @param id
+     * @param
      * @return
      */
     @Override
-    public UserDTO queryUserById(Integer id) {
-        return userMapper.queryUserById(id);
+    public UserDTO queryUserById(Integer userId) {
+        return userMapper.queryUserById(userId);
     }
 
     /**
@@ -119,6 +128,14 @@ public class UserServiceImpl implements UserService {
         }catch (Exception e){
             throw new BaseException("验证码发送出错了");
         }
+    }
+
+    @Override
+    public UserDTO queryUser() {
+        //取userId
+        String token = request.getHeader("token");
+        Integer userId = Integer.valueOf(JWT.decode(token).getClaim("id").asString());
+        return userMapper.queryUserById(userId);
     }
 
 

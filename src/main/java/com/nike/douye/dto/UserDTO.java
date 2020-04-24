@@ -85,4 +85,10 @@ public class UserDTO {
         this.id = id;
         this.password = password;
     }
+
+    public UserDTO(String userName, String phone, String address) {
+        this.userName = userName;
+        this.phone = phone;
+        this.address = address;
+    }
 }

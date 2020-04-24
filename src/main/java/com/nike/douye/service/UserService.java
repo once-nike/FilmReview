@@ -32,14 +32,20 @@ public interface UserService {
 
     /**
      * 根据id查询用户
-     * @param id
+     * @param
      * @return
      */
-    UserDTO queryUserById(Integer id);
+    UserDTO queryUserById(Integer userId);
 
     /**
      * email发送验证码
      * @param email
      */
     void sendVerificationCode(String email);
+
+    /**
+     * 查询用户
+     * @return
+     */
+    UserDTO queryUser();
 }

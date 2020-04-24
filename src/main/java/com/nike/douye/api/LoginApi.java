@@ -18,7 +18,7 @@ public class LoginApi {
     @Autowired
     LoginService loginService;
 
-    @RequestMapping("/userName")
+    @RequestMapping(value = "/userName",method = RequestMethod.POST)
     public ResponseDTO<String> loginByUserName(@Validated(value = ValidGroupF.class)@RequestBody UserDTO user){
         String token;
         if(user!=null){
@@ -26,7 +26,7 @@ public class LoginApi {
         }else throw new BaseException("缺失参数", Code.PARAM_MISSING.getValue());
         return new ResponseDTO<>(Code.SUCCESS.getValue(),token);
     }
-    @RequestMapping("/email")
+    @RequestMapping(value = "/email",method = RequestMethod.POST)
     public ResponseDTO<String> loginByEmail(@Validated(value = ValidGroupB.class)@RequestBody UserDTO user){
         String token;
         if(user!=null){

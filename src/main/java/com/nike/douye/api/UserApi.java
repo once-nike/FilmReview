@@ -48,7 +48,7 @@ public class UserApi {
      * @param user
      * @return
      */
-    @RequestMapping("/update")
+    @RequestMapping("/update/information")
     @CheckToken
     public ResponseDTO<String> updateUser(@Validated(value = ValidGroupC.class) @RequestBody UserDTO user){
         if(user!=null){
@@ -59,13 +59,13 @@ public class UserApi {
 
     /**
      * 查询用户
-     * @param id
+     * @param
      * @return
      */
-    @RequestMapping("/query")
+    @RequestMapping("/query/information")
     @CheckToken
-    public ResponseDTO<UserDTO> queryUser(@RequestParam Integer id){
-        return new ResponseDTO<>(Code.SUCCESS.getValue(),userService.queryUserById(id));
+    public ResponseDTO<UserDTO> queryUser(){
+        return new ResponseDTO<>(Code.SUCCESS.getValue(),userService.queryUser());
     }
 
     @RequestMapping("/update/email")
