@@ -1,6 +1,7 @@
 package com.nike.douye.service;
 
 import com.github.pagehelper.PageInfo;
+import com.nike.douye.dto.AddFilmDTO;
 import com.nike.douye.dto.FilmDTO;
 
 import java.util.List;
@@ -9,9 +10,9 @@ public interface FilmService {
 
 	/**
 	 * 添加电影信息
-	 * @param filmDTO
+	 * @param addFilmDTO
 	 */
-	void addFilm(FilmDTO filmDTO);
+	void addFilm(AddFilmDTO addFilmDTO);
 
 	/**
 	 * 更新电影信息

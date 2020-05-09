@@ -8,21 +8,23 @@ import com.nike.douye.Enum.FilmCountry;
 import com.nike.douye.Enum.FilmLanguage;
 import com.nike.douye.Enum.FilmType;
 import com.nike.douye.ValidGroup.ValidGroupA;
+import com.nike.douye.dto.AddFilmDTO;
 import com.nike.douye.dto.FilmDTO;
 import com.nike.douye.entity.FilmInformation;
 import com.nike.douye.exception.BaseException;
 import com.nike.douye.mapper.FilmMapper;
 import com.nike.douye.service.FilmService;
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotBlank;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.List;
 
 @Service
@@ -30,10 +32,15 @@ public class FilmServiceImpl implements FilmService {
 	@Autowired
 	private FilmMapper filmMapper;
 
+	private String path = "C:\\Users\\86153\\Desktop\\myGit\\FilmReview\\src\\main\\resources\\static\\";
 	@Autowired
 	private HttpServletRequest request;
 	@Override
-	public void addFilm(FilmDTO filmDTO) {
+	public void addFilm(AddFilmDTO addFilmDTO) {
+		FilmDTO filmDTO = new FilmDTO(addFilmDTO.getFilmName(),addFilmDTO.getFilmDirector(),addFilmDTO.getFilmWriter(),
+				addFilmDTO.getFilmActor(),addFilmDTO.getFilmType(),addFilmDTO.getFilmCountry(),addFilmDTO.getFilmLanguage(),
+				addFilmDTO.getFilmDate(),addFilmDTO.getFilmLength(),addFilmDTO.getFilmIntroduction(),"",
+				addFilmDTO.getIsNew());
 		FilmDTO film = enumToString(filmDTO);
 		List<FilmType> filmTypeList = film.getFilmType();
 		String filmType = StringUtils.join(filmTypeList, ",");
@@ -41,6 +48,10 @@ public class FilmServiceImpl implements FilmService {
 		String filmCountry = StringUtils.join(filmCountryList, ",");
 		List<FilmLanguage> filmLanguageList = film.getFilmLanguage();
 		String filmLanguage = StringUtils.join(filmLanguageList, ",");
+
+		MultipartFile filmPicture = addFilmDTO.getFilmPicture();
+		String filename = filmPicture.getOriginalFilename();
+		film.setFilmPicture(path+filename);
 		filmMapper.insertFilm(film,new FilmInformation(filmType,filmCountry,filmLanguage));
 		Integer filmId = filmMapper.queryFilmIdByFilmName(filmDTO.getFilmName());
 		filmMapper.insertScore(filmId);

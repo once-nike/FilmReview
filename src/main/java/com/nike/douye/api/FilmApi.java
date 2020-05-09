@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.nike.douye.Enum.Code;
 import com.nike.douye.annotation.AdminToken;
 import com.nike.douye.annotation.CheckToken;
+import com.nike.douye.dto.AddFilmDTO;
 import com.nike.douye.dto.FilmDTO;
 import com.nike.douye.dto.ResponseDTO;
 import com.nike.douye.dto.UserDTO;
@@ -28,8 +29,8 @@ public class FilmApi {
 	FilmService filmService;
 	@RequestMapping(value = "/add",method = RequestMethod.POST)
 	@AdminToken
-	public ResponseDTO<String> addFilm(@Validated @RequestBody FilmDTO filmDTO){
-		filmService.addFilm(filmDTO);
+	public ResponseDTO<String> addFilm(@Validated @RequestBody AddFilmDTO addFilmDTO){
+		filmService.addFilm(addFilmDTO);
 		return new ResponseDTO<>(Code.SUCCESS.getValue(),"添加成功啦");
 	}
 
