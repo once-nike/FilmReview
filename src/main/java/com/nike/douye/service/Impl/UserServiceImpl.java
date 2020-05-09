@@ -86,6 +86,12 @@ public class UserServiceImpl implements UserService {
     // 改邮箱
     @Override
     public void updateEmail(VerificationCodeDto verificationCodeDto) {
+        //取userId
+        String token = request.getHeader("token");
+        Integer userId = Integer.valueOf(JWT.decode(token).getClaim("id").asString());
+        verificationCodeDto.getUserDTO().setId(userId);
+
+
          String email = verificationCodeDto.getUserDTO().getEmail();
          String verificationCode = verificationCodeDto.getVerificationCode();
         UserDTO userDTO = userMapper.queryUserByEmail(email);
@@ -99,6 +105,12 @@ public class UserServiceImpl implements UserService {
     // 改密码
     @Override
     public void updatePassword(VerificationCodeDto verificationCodeDto) {
+        //取userId
+        String token = request.getHeader("token");
+        Integer userId = Integer.valueOf(JWT.decode(token).getClaim("id").asString());
+        verificationCodeDto.getUserDTO().setId(userId);
+
+
         String email = verificationCodeDto.getUserDTO().getEmail();
         String verificationCode = verificationCodeDto.getVerificationCode();
         validation(email,verificationCode);
