@@ -62,7 +62,11 @@ public class ScoreServiceImpl implements ScoreService {
 		if (scoreDTO.getFilmId() != null){
 			scoreInformation = scoreMapper.findScoreInformationByFilmId(scoreDTO.getFilmId());
 			Integer myScore = scoreMapper.queryMyScoreByUserIdAndFilmId(userId, scoreDTO.getFilmId());
-			myScoreEnum = Score.StringToEnum(myScore);
+			if(myScore != null){
+				myScoreEnum = Score.StringToEnum(myScore);
+			}else {
+				myScoreEnum = null;
+			}
 		}else {
 			throw new BaseException("filmId必传哦",Code.PARAM_MISSING.getValue());
 		}
