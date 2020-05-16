@@ -23,6 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotBlank;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -49,12 +51,25 @@ public class FilmServiceImpl implements FilmService {
 		List<FilmLanguage> filmLanguageList = film.getFilmLanguage();
 		String filmLanguage = StringUtils.join(filmLanguageList, ",");
 
-		MultipartFile filmPicture = addFilmDTO.getFilmPicture();
-		String filename = filmPicture.getOriginalFilename();
-		film.setFilmPicture(path+filename);
+		film.setFilmPicture("http://localhost:9520/film/"+addFilmDTO.getFilmName()+".jpg");
 		filmMapper.insertFilm(film,new FilmInformation(filmType,filmCountry,filmLanguage));
 		Integer filmId = filmMapper.queryFilmIdByFilmName(filmDTO.getFilmName());
 		filmMapper.insertScore(filmId);
+	}
+
+	@Override
+	public void addPicture(MultipartFile file) throws Exception{
+		String originalFilename = file.getOriginalFilename();
+		System.out.println("--------------------------------"+originalFilename);
+		InputStream inputStream = file.getInputStream();
+		int i= 0;
+		File file1 = new File(path+originalFilename);
+		FileOutputStream outputStream = new FileOutputStream(file1);
+		while ((i=inputStream.read()) != -1){
+			outputStream.write(i);
+		}
+		inputStream.close();
+		outputStream.close();
 	}
 
 
@@ -138,9 +153,6 @@ public class FilmServiceImpl implements FilmService {
 		Integer userId = Integer.valueOf(JWT.decode(token).getClaim("id").asString());
 		List<FilmDTO> filmDTOS = filmMapper.queryCollectionByUserId(userId);
 		List<FilmInformation> filmInformations = filmMapper.queryCollectionTypesByUserId(userId);
-		if(isEmpty(filmDTOS)){
-			throw new BaseException("您还没有收藏任何电影哦",Code.DATA_NOT_EXIT.getValue());
-		}
 		List<FilmDTO> fuse = fuse(filmDTOS, filmInformations);
 		return new PageInfo(fuse);
 	}

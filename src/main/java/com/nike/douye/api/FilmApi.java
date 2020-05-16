@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -32,6 +33,13 @@ public class FilmApi {
 	public ResponseDTO<String> addFilm(@Validated @RequestBody AddFilmDTO addFilmDTO){
 		filmService.addFilm(addFilmDTO);
 		return new ResponseDTO<>(Code.SUCCESS.getValue(),"添加成功啦");
+	}
+
+	@RequestMapping(value = "/addPicture",method = RequestMethod.POST)
+	@AdminToken
+	public ResponseDTO<String> addPicture(@RequestBody MultipartFile multipartFile) throws Exception {
+		filmService.addPicture(multipartFile);
+		return new ResponseDTO<>(Code.SUCCESS.getValue(),"图片上传成功啦");
 	}
 
 	@RequestMapping(value = "/update",method = RequestMethod.POST)

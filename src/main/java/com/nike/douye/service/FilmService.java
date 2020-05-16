@@ -3,6 +3,7 @@ package com.nike.douye.service;
 import com.github.pagehelper.PageInfo;
 import com.nike.douye.dto.AddFilmDTO;
 import com.nike.douye.dto.FilmDTO;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -13,6 +14,12 @@ public interface FilmService {
 	 * @param addFilmDTO
 	 */
 	void addFilm(AddFilmDTO addFilmDTO);
+
+	/**
+	 * 上传图片
+	 * @param multipartFile
+	 */
+	void addPicture(MultipartFile multipartFile) throws Exception;
 
 	/**
 	 * 更新电影信息

@@ -57,7 +57,7 @@ public class AddFilmDTO {
 	String filmIntroduction;
 
 	@NotBlank(groups = {ValidGroupA.class})
-	MultipartFile filmPicture;
+	String filmPicture;
 
 	@NotBlank(groups = {ValidGroupA.class})
 	char isNew;
@@ -78,7 +78,7 @@ public class AddFilmDTO {
 		this.pageSize = pageSize;
 	}
 
-	public AddFilmDTO(String filmName, String filmDirector, String filmWriter, String filmActor, List<FilmType> filmType, List<FilmCountry> filmCountry, List<FilmLanguage> filmLanguage, String filmDate, String filmLength, String filmIntroduction, MultipartFile filmPicture, char isNew) {
+	public AddFilmDTO(String filmName, String filmDirector, String filmWriter, String filmActor, List<FilmType> filmType, List<FilmCountry> filmCountry, List<FilmLanguage> filmLanguage, String filmDate, String filmLength, String filmIntroduction, String filmPicture, char isNew) {
 		this.filmName = filmName;
 		this.filmDirector = filmDirector;
 		this.filmWriter = filmWriter;
